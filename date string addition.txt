@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void solve()
+{
+    int d = 0;
+    int m = 0;
+    int y = 0;
+    int x = 0;
+    
+    cin>>d>>m>>y>>x;
+    
+    int new_month = m;
+    int new_day = d;
+    int new_year = y;
+    
+    vector<int> mp = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+    if(y%4 == 0)
+    {
+        mp[2] = 29;
+    }
+    int i = 1;
+    int count = 12 - m;
+    int flag = 0;
+    
+    
+    
+    int no_of_days = mp[m];
+    int add_days = d + x;
+    
+    if(add_days <= no_of_days)
+    {
+        new_day = add_days;
+    }
+    else
+    {
+        int rem = no_of_days - d;
+        x = x - rem;
+        int next_month = m;
+        
+            while(1)
+            {
+                if(count == 0)
+                {
+                    new_year += 1;
+                    next_month = 0;
+                    no_of_days = 0;
+                    count = 12;
+                    if(new_year % 4 == 0)
+                    {
+                        mp[2] = 29;
+                    }
+                    else
+                    {
+                        mp[2] = 28;
+                    }
+                }
+                    
+                next_month = next_month + 1;
+                new_month = next_month;
+                if(x > mp[next_month])
+                {
+                    x = x - mp[next_month];
+                }
+                else
+                {
+                    break;
+                }
+                count--;
+            }
+      
+        new_day = x;
+        
+    } 
+
+        
+    
+    cout<<new_day<<" "<<new_month<<" "<<new_year<<endl;
+
+    
+}
+
+
+int main()
+{
+    int t; cin>>t;
+    while(t--)
+    {
+        solve();
+    }
+}

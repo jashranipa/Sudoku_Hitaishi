@@ -1,0 +1,72 @@
+class Solution {
+public:
+   
+    bool isValid(int row,int col, char c,vector<vector<char>> &board)
+    {
+        for(int i=0;i<9;i++)
+        {
+            if(board[i][col] == c)
+                return false;
+            if(board[row][i] == c)
+                return false;
+            
+            if(board[3*(row/3) + i/3][3*(col/3) + i%3] == c)
+                return false;
+        }
+        return true;
+    }
+    bool solve_Sudoku(vector<vector<char>> &board)
+    {
+        int n = board.size();
+        int m = board[0].size();
+        stack<pair<char,pair<int,int>>> st;
+		int i=0;
+        int j=0;
+        char c1 = '1';
+        
+        while(i<n)
+        {
+            j=0;
+            while(j<m)
+            {
+                // cout<<i<<" "<<j<<endl;
+				int flag = 0;
+                if(board[i][j] == '.')
+                {
+                    char c=c1;
+                    while(c<='9')
+                    {  
+                        if(isValid(i,j,c,board))
+                        {
+							    flag = 1;
+							    st.push({c,{i,j}});
+                                board[i][j] = c;
+                                break;
+                            
+                        }
+                        c++;
+                    }
+                    c1 = '1';
+					if(flag == 0){
+					pair<char,pair<int,int>> p = st.top();
+                    st.pop();
+					board[p.second.first][p.second.second] = '.';
+                    i=p.second.first;
+                    j=p.second.second-1;
+                    c1=p.first+1;
+					}
+                }   
+                
+                
+                j++;
+            }
+            
+            i++;
+        }
+         return true;
+    }
+    void solveSudoku(vector<vector<char>>& board) {
+     
+        solve_Sudoku(board);
+    }
+};

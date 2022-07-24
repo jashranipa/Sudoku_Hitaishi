@@ -1,0 +1,71 @@
+class Solution {
+    public boolean isValid(int row,int col,char c,char[][] board)
+    {
+        for(int i=0;i<9;i++)
+        {
+            if(board[i][col] == c)
+                return false;
+            if(board[row][i] == c)
+                return false;
+            if(board[3*(row/3) + i/3][3*(col/3) + i%3] == c)
+                return false;
+        }
+        return true;
+    }
+    
+    public void solve(char[][] board)
+    {
+        int i = 0;
+        int j = 0;
+        char c1='1';
+        Stack<Pair<Character,Pair<Integer,Integer>>> st = new Stack<Pair<Character,Pair<Integer,Integer>>>();
+        
+        while(i<9)
+        {
+            j=0;
+            while(j<9)
+            {
+                if(board[i][j] == '.')
+                {
+                    int flag = 0;
+                    char c = c1;
+                    while(c<='9')
+                    {
+                        if(isValid(i,j,c,board))
+                        {
+                            flag = 1;
+                            Pair<Integer,Integer> p1 = new Pair<Integer,Integer>(i,j);
+                            Pair<Character,Pair<Integer,Integer>> p2 = new Pair<Character,Pair<Integer,Integer>>(c,p1);
+                            st.push(p2);
+                            board[i][j] = c;
+                            break;
+                        }
+                        c++;
+                    }
+                    c1 = '1';
+                    if(flag == 0)
+                    {
+                        
+                        char p1 = st.peek().getKey();
+                        int idx_1 = st.peek().getValue().getKey();
+                        int idx_2 = st.peek().getValue().getValue();
+                        st.pop();
+                        board[idx_1][idx_2] = '.';
+                        c1 = p1;
+                        c1++;
+                        i = idx_1;
+                        j = idx_2 - 1;
+                        
+                    }
+                }
+                j++;
+                
+            }
+            i++;
+        }
+    }
+    public void solveSudoku(char[][] board) {
+        
+        solve(board);
+    }
+}
